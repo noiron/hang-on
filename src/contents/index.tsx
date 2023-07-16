@@ -7,24 +7,34 @@ import type { PlasmoGetStyle } from "plasmo"
 import Countdown from "~components/countdown"
 import { diffTime, formatTime } from "~utils"
 
-function shouldBlock() {
-  const blockCurrentUrl = window.location.href.indexOf("zhihu") > -1
-  if (!blockCurrentUrl) return false
-  return true
+function shouldBlock(blockedSites: string[]) {
+  const blockCurrentUrl = blockedSites.some(
+    (site) => window.location.href.indexOf(site) > -1
+  )
+  return blockCurrentUrl
 }
 
-const WAIT_TIME = 10
-
 const CustomPage = () => {
-  const [blocked, setBlocked] = useState(shouldBlock())
+  const [blocked, setBlocked] = useState(false)
   const [lastTime] = useStorage<number>("time")
   const [hideButton, setHideButton] = useState(true)
+  const [waitTime] = useStorage<number>("waitTime")
+  const [blockedSites] = useStorage("blockedSites", [])
 
   useEffect(() => {
-    setTimeout(() => {
-      setHideButton(false)
-    }, WAIT_TIME * 1000)
-  }, [])
+    setBlocked(shouldBlock(blockedSites))
+  }, [blockedSites])
+
+  let timeoutId = null
+  useEffect(() => {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(
+      () => {
+        setHideButton(false)
+      },
+      (waitTime || 10) * 1000
+    )
+  }, [waitTime])
 
   if (!blocked) return null
 
