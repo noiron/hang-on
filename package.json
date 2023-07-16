@@ -1,0 +1,31 @@
+{
+  "name": "hold-on",
+  "displayName": "Hold on",
+  "version": "0.0.1",
+  "description": "An extension that helps you control your web browsing time.",
+  "author": "noiron",
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "test": "plasmo test"
+  },
+  "dependencies": {
+    "plasmo": "0.80.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.241",
+    "@types/node": "20.4.2",
+    "@types/react": "18.2.15",
+    "@types/react-dom": "18.2.7",
+    "prettier": "3.0.0",
+    "typescript": "5.1.6",
+    "@plasmohq/prettier-plugin-sort-imports": "4.0.1"
+  },
+  "manifest": {
+    "host_permissions": [
+      "https://*/*"
+    ]
+  }
+}
