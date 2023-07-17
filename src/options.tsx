@@ -36,7 +36,7 @@ const Options = () => {
         <ul>
           {blockedSites.map((site, index) => {
             return (
-              <li>
+              <li style={{ margin: "10px 0" }}>
                 {site}
                 <button
                   style={{ marginLeft: 10 }}
@@ -51,12 +51,15 @@ const Options = () => {
             )
           })}
         </ul>
+        <p>Enter the page you want to block. Eg. twitter.com</p>
         <input
           value={site}
+          style={{ width: 220 }}
           onChange={(e) => {
             setSite(e.target.value)
           }}></input>
         <button
+          style={{ marginLeft: 10 }}
           onClick={() => {
             const newBlockedSites = [...blockedSites, site]
             setBlockedSites(newBlockedSites)
