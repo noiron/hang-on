@@ -5,7 +5,7 @@ const storage = new Storage()
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const host = req.body.host
-  const previousTime = await storage.get("time")
+  const previousTime = (await storage.get("time")) || {}
   await storage.set("time", Object.assign(previousTime, { [host]: Date.now() }))
   res.send(0)
 }

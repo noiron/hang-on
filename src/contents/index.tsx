@@ -38,7 +38,7 @@ const CustomPage = () => {
 
   if (!blocked) return null
 
-  const timeSpan = lastTime[location.host]
+  const timeSpan = lastTime?.[location.host]
     ? diffTime(Date.now() - lastTime[location.host])
     : null
 
