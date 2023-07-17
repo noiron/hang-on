@@ -1,5 +1,6 @@
 import { useStorage } from "@plasmohq/storage/hook"
 import { useState } from "react"
+import hangingSlothImage from "data-base64:~assets/hanging-sloth.png"
 
 const Options = () => {
   const [waitTime, setWaitTime] = useStorage<number>("waitTime")
@@ -14,7 +15,13 @@ const Options = () => {
       style={{
         margin: 20
       }}>
-      <h1>Hold On For a Moment</h1>
+      <h1>Hang On For a Moment</h1>
+      <img
+        src={hangingSlothImage}
+        style={{
+          width: 200,
+          margin: 20
+        }}></img>
       <p>
         <h2>Wait time</h2>
         <input
