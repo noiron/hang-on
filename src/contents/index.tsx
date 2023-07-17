@@ -43,7 +43,7 @@ const CustomPage = () => {
     : null
 
   return (
-    <div className="hold-on">
+    <div className="hang-on">
       <h2>This page is blocked</h2>
       <p>Page Title: {document.title}</p>
       {timeSpan && (

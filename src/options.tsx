@@ -15,7 +15,7 @@ const Options = () => {
       style={{
         margin: 20
       }}>
-      <h1>Hang On For a Moment</h1>
+      <h1>Hang On a Moment</h1>
       <img
         src={hangingSlothImage}
         style={{
