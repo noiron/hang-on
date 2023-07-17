@@ -18,8 +18,8 @@ export function formatTime(time: {
   minutes: number
   seconds: number
 }) {
-  const h = time.hours > 0 ? `${time.hours}小时` : ""
-  const m = time.minutes > 0 ? `${time.minutes}分钟` : ""
-  const s = time.seconds > 0 ? `${time.seconds}秒` : ""
-  return `${h}${m}${s}`
+  const h = time.hours > 0 ? `${time.hours} h ` : ""
+  const m = time.minutes > 0 ? `${time.minutes} m` : ""
+  const s = time.seconds > 0 ? `${time.seconds} s` : ""
+  return `${h} ${m} ${s}`
 }

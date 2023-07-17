@@ -44,18 +44,20 @@ const CustomPage = () => {
 
   return (
     <div className="hold-on">
-      <h2>本页面已被屏蔽</h2>
-      <p>页面标题：{document.title}</p>
+      <h2>This page is blocked</h2>
+      <p>Page Title: {document.title}</p>
       {timeSpan && (
         <p>
-          上次打开 {location.host} 是在&nbsp;
+          The last time{" "}
+          <span style={{ textDecoration: "underline" }}>{location.host}</span>{" "}
+          opened was&nbsp;
           <span
             style={{
               fontWeight: "bold"
             }}>
             {formatTime(timeSpan)}
           </span>
-          &nbsp;前
+          &nbsp; ago
         </p>
       )}
       <Countdown />
@@ -76,7 +78,7 @@ const CustomPage = () => {
             }
             setBlocked(false)
           }}>
-          仍然查看
+          Continue
         </button>
       )}
     </div>
