@@ -3,7 +3,7 @@ import { useState } from "react"
 import hangingSlothImage from "data-base64:~assets/hanging-sloth.png"
 
 const Options = () => {
-  const [waitTime, setWaitTime] = useStorage<number>("waitTime")
+  const [waitTime, setWaitTime] = useStorage<number>("waitTime", 10)
   const [blockedSites, setBlockedSites] = useStorage<string[]>(
     "blockedSites",
     []
