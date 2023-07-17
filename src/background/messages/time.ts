@@ -4,7 +4,9 @@ import { Storage } from "@plasmohq/storage"
 const storage = new Storage()
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  await storage.set("time", Date.now())
+  const host = req.body.host
+  const previousTime = await storage.get("time")
+  await storage.set("time", Object.assign(previousTime, { [host]: Date.now() }))
   res.send(0)
 }
 

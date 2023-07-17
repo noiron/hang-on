@@ -38,20 +38,26 @@ const CustomPage = () => {
 
   if (!blocked) return null
 
+  const timeSpan = lastTime[location.host]
+    ? diffTime(Date.now() - lastTime[location.host])
+    : null
+
   return (
     <div className="hold-on">
       <h2>本页面已被屏蔽</h2>
       <p>页面标题：{document.title}</p>
-      <p>
-        上次打开是在&nbsp;
-        <span
-          style={{
-            fontWeight: "bold"
-          }}>
-          {formatTime(diffTime(Date.now() - lastTime))}
-        </span>
-        &nbsp;前
-      </p>
+      {timeSpan && (
+        <p>
+          上次打开 {location.host} 是在&nbsp;
+          <span
+            style={{
+              fontWeight: "bold"
+            }}>
+            {formatTime(timeSpan)}
+          </span>
+          &nbsp;前
+        </p>
+      )}
       <Countdown />
 
       {!hideButton && (
@@ -59,7 +65,12 @@ const CustomPage = () => {
           className="custom-btn btn-16"
           onClick={async () => {
             try {
-              await sendToBackground({ name: "time" })
+              await sendToBackground({
+                name: "time",
+                body: {
+                  host: window.location.host
+                }
+              })
             } catch (e) {
               console.error(e)
             }
