@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import type { PlasmoGetStyle } from "plasmo"
 
 import Countdown from "~components/countdown"
-import { diffTime, formatTime } from "~utils"
+import { diffTime, formatTime, isToday } from "~utils"
 
 function shouldBlock(blockedSites: string[]) {
   const blockCurrentUrl = blockedSites.some(
@@ -16,7 +16,9 @@ function shouldBlock(blockedSites: string[]) {
 
 const CustomPage = () => {
   const [blocked, setBlocked] = useState(false)
-  const [recordedTimes] = useStorage<number>("time")
+  const [recordedTimes] = useStorage<{ [host: string]: number[] | number }>(
+    "time"
+  )
   const [hideButton, setHideButton] = useState(true)
   const [waitTime] = useStorage<number>("waitTime")
   const [blockedSites] = useStorage("blockedSites", [])
@@ -55,9 +57,9 @@ const CustomPage = () => {
   let lastTime = 0
   if (recordedTimes?.[location.host]) {
     if (Array.isArray(recordedTimes[location.host])) {
-      lastTime = recordedTimes[location.host].at(-1)
+      lastTime = (recordedTimes[location.host] as number[]).at(-1)
     } else {
-      lastTime = recordedTimes[location.host]
+      lastTime = recordedTimes[location.host] as number
     }
   }
   const elapsedTime = lastTime ? diffTime(Date.now() - lastTime) : null
@@ -72,16 +74,23 @@ const CustomPage = () => {
             The last time{" "}
             <span style={{ textDecoration: "underline" }}>{location.host}</span>{" "}
             opened was&nbsp;
-            <span
-              style={{
-                fontWeight: "bold"
-              }}>
+            <span style={{ fontSize: "1.2em", fontWeight: "bold" }}>
               {formatTime(elapsedTime)}
             </span>
             &nbsp; ago
           </p>
           {Array.isArray(recordedTimes[location.host]) && (
-            <p>你最近打开了 {recordedTimes[location.host].length} 次</p>
+            <p>
+              You have opened it&nbsp;
+              <span style={{ fontSize: "1.2em", fontWeight: "bold" }}>
+                {
+                  (recordedTimes[location.host] as number[]).filter((ts) =>
+                    isToday(ts)
+                  ).length
+                }
+              </span>
+              &nbsp;times today
+            </p>
           )}
         </>
       )}
