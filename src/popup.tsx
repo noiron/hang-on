@@ -15,19 +15,27 @@ function IndexPopup() {
       if (currentUrl) return
 
       // 需要添加 permissions activeTab 才能获取 url
-      const url = await chrome.tabs.query({
+      const tabs = await chrome.tabs.query({
         active: true,
         currentWindow: true
       })
-      if (!url.length) return
+      if (!tabs.length) return
 
-      if (url[0]) setCurrentUrl(new URL(url[0].url))
+      console.log("url[0] ", tabs[0])
+      const firstTab = tabs[0]
+      // eg. chrome://newtab/  chrome-extension://xxx
+      if (!firstTab.url?.startsWith("http")) return
+
+      setCurrentUrl(new URL(firstTab.url))
     }
 
     check()
   })
+  console.log("currentUrl: ", currentUrl)
 
   useEffect(() => {
+    if (!currentUrl) return
+
     let blocked = false
     for (let i = 0; i < blockedSites.length; i++) {
       const site = blockedSites[i]
@@ -40,10 +48,22 @@ function IndexPopup() {
     setIsBlocked(blocked)
   }, [currentUrl, blockedSites])
 
+  if (!currentUrl) {
+    return (
+      <div
+        style={{
+          width: 280,
+          padding: 8
+        }}>
+        <h2>Sorry, you can't block this page</h2>
+      </div>
+    )
+  }
+
   return (
     <div
       style={{
-        width: 200,
+        width: 280,
         padding: 8
       }}>
       {isBlocked ? (
