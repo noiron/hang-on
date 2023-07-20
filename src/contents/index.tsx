@@ -67,7 +67,16 @@ const CustomPage = () => {
   return (
     <div className="hang-on">
       <h2>This page is blocked</h2>
-      <p>Page Title: {document.title}</p>
+      <p
+        style={{
+          padding: "0 30px",
+          // @ts-ignore
+          textWrap: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis"
+        }}>
+        Page Title: {document.title}
+      </p>
       {elapsedTime && (
         <>
           <p>
