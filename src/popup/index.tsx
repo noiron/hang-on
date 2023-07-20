@@ -1,5 +1,7 @@
 import { useStorage } from "@plasmohq/storage/hook"
 import { useEffect, useState } from "react"
+import "../style.css"
+import "./popup.css"
 
 function IndexPopup() {
   const [blockedSites, setBlockedSites] = useStorage<string[]>(
@@ -31,7 +33,6 @@ function IndexPopup() {
 
     check()
   })
-  console.log("currentUrl: ", currentUrl)
 
   useEffect(() => {
     if (!currentUrl) return
@@ -48,6 +49,19 @@ function IndexPopup() {
     setIsBlocked(blocked)
   }, [currentUrl, blockedSites])
 
+  function handleClick() {
+    if (isBlocked) {
+      const index = blockedSites.indexOf(matchedSite)
+      const newBlockedSites = [...blockedSites]
+      newBlockedSites.splice(index, 1)
+      setBlockedSites(newBlockedSites)
+    } else {
+      const host = currentUrl.host
+      const newBlockedSites = [...blockedSites, host]
+      setBlockedSites(newBlockedSites)
+    }
+  }
+
   if (!currentUrl) {
     return (
       <div
@@ -60,40 +74,27 @@ function IndexPopup() {
     )
   }
 
+  const text = isBlocked
+    ? "This site is blocked"
+    : "Do you want to block this site ?"
+
   return (
     <div
+      className="p-4"
       style={{
-        width: 280,
-        padding: 8
+        width: 400
       }}>
-      {isBlocked ? (
-        <div>
-          <h2>This site is blocked</h2>
-          <p style={{ fontSize: 18 }}>{matchedSite}</p>
-          <button
-            onClick={() => {
-              const index = blockedSites.indexOf(matchedSite)
-              const newBlockedSites = [...blockedSites]
-              newBlockedSites.splice(index, 1)
-              setBlockedSites(newBlockedSites)
-            }}>
-            Remove
-          </button>
-        </div>
-      ) : (
-        <div>
-          <h2>Do you want to block this site ?</h2>
-          <p style={{ fontSize: 18 }}>{currentUrl?.host}</p>
-          <button
-            onClick={() => {
-              const host = currentUrl.host
-              const newBlockedSites = [...blockedSites, host]
-              setBlockedSites(newBlockedSites)
-            }}>
-            Block
-          </button>
-        </div>
-      )}
+      <div>
+        <h2 className="mb-2 text-xl font-bold">{text}</h2>
+        <p className="text-lg pb-2">
+          {isBlocked ? matchedSite : currentUrl?.host}
+        </p>
+        <button
+          className="rounded bg-blue-500 px-4 py-2 text-white"
+          onClick={handleClick}>
+          {isBlocked ? "Unblock" : "Block"}
+        </button>
+      </div>
     </div>
   )
 }
