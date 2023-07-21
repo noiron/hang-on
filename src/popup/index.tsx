@@ -1,5 +1,6 @@
 import { useStorage } from "@plasmohq/storage/hook"
 import { useEffect, useState } from "react"
+import sloth from "data-base64:~assets/sloth.svg"
 import "../style.css"
 import "./popup.css"
 
@@ -65,7 +66,10 @@ function IndexPopup() {
   if (!currentUrl) {
     return (
       <div className="p-4 w-[350px]">
-        <h2 className="text-lg">Sorry, you can't block this page</h2>
+        <h2 className="text-lg">
+          Sorry, you can't block this page
+          <img src={sloth} className="w-6 ml-2 inline" />
+        </h2>
       </div>
     )
   }
