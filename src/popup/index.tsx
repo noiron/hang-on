@@ -64,12 +64,8 @@ function IndexPopup() {
 
   if (!currentUrl) {
     return (
-      <div
-        style={{
-          width: 280,
-          padding: 8
-        }}>
-        <h2>Sorry, you can't block this page</h2>
+      <div className="p-4 w-[350px]">
+        <h2 className="text-lg">Sorry, you can't block this page</h2>
       </div>
     )
   }
@@ -79,18 +75,14 @@ function IndexPopup() {
     : "Do you want to block this site ?"
 
   return (
-    <div
-      className="p-4"
-      style={{
-        width: 400
-      }}>
+    <div className="p-4 w-[350px]">
       <div>
         <h2 className="mb-2 text-xl font-bold">{text}</h2>
         <p className="text-lg pb-2">
           {isBlocked ? matchedSite : currentUrl?.host}
         </p>
         <button
-          className="rounded bg-blue-500 px-4 py-2 text-white"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
           onClick={handleClick}>
           {isBlocked ? "Unblock" : "Block"}
         </button>
