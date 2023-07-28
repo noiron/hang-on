@@ -12,6 +12,10 @@ const Options = () => {
     []
   )
   const [site, setSite] = useState("")
+  const [noticeInterval, setNoticeInterval] = useStorage<number>(
+    "noticeInterval",
+    0
+  )
 
   return (
     <div className="m-4 p-4 bg-white">
@@ -76,6 +80,20 @@ const Options = () => {
             })}
           </ul>
         </div>
+
+        <p className="mt-4">
+          <span className="text-lg inline mr-2">Notice every </span>
+          <Input
+            type="number"
+            min={0}
+            value={noticeInterval}
+            className="mr-2"
+            onChange={(value: string) => {
+              setNoticeInterval(parseInt(value))
+            }}
+          />
+          <span className="text-lg inline">minutes</span>
+        </p>
       </div>
     </div>
   )

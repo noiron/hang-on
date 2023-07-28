@@ -27,11 +27,13 @@ const CustomPage = () => {
   const [blockedSites] = useStorage("blockedSites", [])
   const [startTime, setStartTime] = useState(null) // 这次浏览从何时开始
   const [noticeCount, setNoticeCount] = useState(0) // 提示过了几次，记录下来防止重复提示
+  const [noticeInterval] = useStorage("noticeInterval")
 
   useInterval(() => {
     if (!shouldBlock || isBlocking) return
+    if (!noticeInterval) return
 
-    const MINUTES = 5 // 每隔多少分钟进行提示
+    const MINUTES = noticeInterval // 每隔多少分钟进行提示
     const minutesInMs = 1000 * 60 * MINUTES
     const howManyTimes = Math.floor((Date.now() - startTime) / minutesInMs)
 
