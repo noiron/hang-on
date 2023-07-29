@@ -1,5 +1,6 @@
 import { useStorage } from "@plasmohq/storage/hook"
 import { useState } from "react"
+import { type KeyboardEvent } from "react"
 import hangingSlothImage from "data-base64:~assets/hanging-sloth.png"
 import "../style.css"
 import Input from "./input"
@@ -17,6 +18,15 @@ const Options = () => {
     0
   )
 
+  const addSite = () => {
+    if (!blockedSites.includes(site)) {
+      const newBlockedSites = [...blockedSites, site]
+      setBlockedSites(newBlockedSites)
+    } else {
+    }
+    setSite("")
+  }
+
   return (
     <div className="m-4 p-4 bg-white">
       <h1 className="text-2xl font-bold text-center">Hang On a Moment</h1>
@@ -24,7 +34,7 @@ const Options = () => {
 
       <div className="w-1/2 m-auto">
         <p>
-          <h2 className="text-lg inline mr-3">Wait time</h2>
+          <span className="text-lg inline mr-3">Wait time</span>
           <Input
             type="number"
             min={3}
@@ -44,16 +54,15 @@ const Options = () => {
           <Input
             value={site}
             onChange={(value: string) => setSite(value)}
+            onKeyPress={(e: KeyboardEvent<HTMLInputElement>) => {
+              if (e.key === "Enter") {
+                addSite()
+              }
+            }}
             className="flex-auto"
           />
 
-          <Button
-            handleClick={() => {
-              const newBlockedSites = [...blockedSites, site]
-              setBlockedSites(newBlockedSites)
-              setSite("")
-            }}
-            className="ml-2">
+          <Button handleClick={addSite} className="ml-2">
             Add
           </Button>
         </div>
@@ -64,6 +73,7 @@ const Options = () => {
             {blockedSites.map((site, index) => {
               return (
                 <li
+                  key={site}
                   className="flex justify-between items-center py-2 px-2
                 hover:bg-slate-100 rounded border-b border-slate-200">
                   {site}
