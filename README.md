@@ -1,3 +1,7 @@
+[**Hang On** - Chrome Web Store](https://chrome.google.com/webstore/detail/hang-on/kbkaijpndocemnjniokfnibldikbepab)
+
+---
+
 This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
 
 ## Getting Started
