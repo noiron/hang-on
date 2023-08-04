@@ -25,30 +25,34 @@ const CustomPage = () => {
   const [hideButton, setHideButton] = useState(true)
   const [waitTime] = useStorage<number>("waitTime")
   const [blockedSites] = useStorage("blockedSites", [])
-  const [startTime, setStartTime] = useState(null) // 这次浏览从何时开始
-  const [noticeCount, setNoticeCount] = useState(0) // 提示过了几次，记录下来防止重复提示
+  const [lastNoticeTime, setLastNoticeTime] = useState(0) // 上次提示的时间，记录下来防止重复提示
+  const [durationTime, setDurationTime] = useState(0)
   const [noticeInterval] = useStorage("noticeInterval")
 
   useInterval(() => {
     if (!shouldBlock || isBlocking) return
     if (!noticeInterval) return
+    if (document.hidden) return
 
-    const MINUTES = noticeInterval // 每隔多少分钟进行提示
-    const minutesInMs = 1000 * 60 * MINUTES
-    const howManyTimes = Math.floor((Date.now() - startTime) / minutesInMs)
+    const newDurationTime = durationTime + 5
+    setDurationTime(newDurationTime)
 
-    if (howManyTimes > noticeCount) {
+    const intervalInSeconds = noticeInterval * 60
+
+    if (newDurationTime - lastNoticeTime > intervalInSeconds) {
+      const count = Math.floor(newDurationTime / intervalInSeconds)
+
       toast(
         `You have been on this page for over ${
-          howManyTimes * MINUTES
+          count * noticeInterval
         } minutes.`,
         {
           position: toast.POSITION.TOP_RIGHT
         }
       )
-      setNoticeCount(howManyTimes)
+      setLastNoticeTime(newDurationTime)
     }
-  }, 1000 * 10)
+  }, 1000 * 5)
 
   useEffect(() => {
     setShouldBlock(shouldBlockCurrentUrl(blockedSites))
@@ -83,7 +87,6 @@ const CustomPage = () => {
       console.error(e)
     }
     setIsBlocking(false)
-    setStartTime(Date.now())
   }
 
   const [lastTime, setLastTime] = useState(0)
@@ -105,7 +108,6 @@ const CustomPage = () => {
     // 一分钟内不会再次阻拦同一个网站 TODO: 设置一个选项
     const isCoolingDown = lastTime ? Date.now() - lastTime < 1000 * 60 : false
     if (isCoolingDown) {
-      setStartTime(Date.now())
       setIsBlocking(false)
     }
   }, [lastTime])

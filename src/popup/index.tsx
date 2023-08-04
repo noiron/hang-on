@@ -50,7 +50,7 @@ function IndexPopup() {
     setIsBlocked(blocked)
   }, [currentUrl, blockedSites])
 
-  function handleClick() {
+  function toggleBlock() {
     if (isBlocked) {
       const index = blockedSites.indexOf(matchedSite)
       const newBlockedSites = [...blockedSites]
@@ -79,16 +79,24 @@ function IndexPopup() {
     : "Do you want to block this site ?"
 
   return (
-    <div className="p-4 w-[350px]">
+    <div className="p-4 w-[340px]">
       <div>
         <h2 className="mb-2 text-xl font-bold">{text}</h2>
-        <p className="text-lg pb-2">
-          {isBlocked ? matchedSite : currentUrl?.host}
-        </p>
+        <p className="text-lg">{isBlocked ? matchedSite : currentUrl?.host}</p>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-          onClick={handleClick}>
+          className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          onClick={toggleBlock}>
           {isBlocked ? "Unblock" : "Block"}
+        </button>
+
+        <button
+          className="mt-2 text-blue-600 hover:underline block"
+          onClick={() => {
+            chrome.tabs.create({
+              url: "./options.html"
+            })
+          }}>
+          Open Options
         </button>
       </div>
     </div>
