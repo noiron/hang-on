@@ -8,6 +8,7 @@ import toastifyStyle from "data-text:./ReactToastify.css"
 import Countdown from "./countdown"
 import { diffTime, formatTime, isToday } from "~utils"
 import { useInterval } from "~hooks"
+import { timeStorage } from "~background/messages/time"
 
 function shouldBlockCurrentUrl(blockedSites: string[]) {
   const blockCurrentUrl = blockedSites.some(
@@ -19,9 +20,10 @@ function shouldBlockCurrentUrl(blockedSites: string[]) {
 const CustomPage = () => {
   const [shouldBlock, setShouldBlock] = useState(false)
   const [isBlocking, setIsBlocking] = useState(false)
-  const [recordedTimes] = useStorage<{ [host: string]: number[] | number }>(
-    "time"
-  )
+  const [recordedTimes] = useStorage<{ [host: string]: number[] | number }>({
+    key: "time",
+    instance: timeStorage
+  })
   const [hideButton, setHideButton] = useState(true)
   const [waitTime] = useStorage<number>("waitTime")
   const [blockedSites] = useStorage("blockedSites", [])
