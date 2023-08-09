@@ -89,15 +89,31 @@ function IndexPopup() {
           {isBlocked ? "Unblock" : "Block"}
         </button>
 
-        <button
-          className="mt-2 text-blue-600 hover:underline block"
-          onClick={() => {
-            chrome.tabs.create({
-              url: "./options.html"
-            })
-          }}>
-          Open Options
-        </button>
+        <div className="mt-2">
+          <button
+            className=" text-blue-600 hover:underline inline-block"
+            onClick={() => {
+              chrome.tabs.create({
+                url: "./options.html"
+              })
+            }}>
+            Options
+          </button>
+
+          {isBlocked && (
+            <button
+              className="ml-4 text-blue-600 hover:underline inline-block"
+              onClick={() => {
+                chrome.tabs.create({
+                  url:
+                    "./tabs/charts.html?host=" +
+                    encodeURIComponent(currentUrl.host)
+                })
+              }}>
+              Stats
+            </button>
+          )}
+        </div>
       </div>
     </div>
   )
