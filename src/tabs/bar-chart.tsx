@@ -6,6 +6,8 @@ interface BarChartProps {
     date: string
     count: number
   }[]
+  width: number
+  height: number
 }
 
 const BarChart = (props: BarChartProps) => {
@@ -13,9 +15,9 @@ const BarChart = (props: BarChartProps) => {
     if (!props.data || !props.data.length) return
 
     // set the dimensions and margins of the graph
-    const margin = { top: 30, right: 30, bottom: 70, left: 60 }
-    const width = 520 - margin.left - margin.right
-    const height = 400 - margin.top - margin.bottom
+    const margin = { top: 30, right: 30, bottom: 40, left: 60 }
+    const width = props.width - margin.left - margin.right
+    const height = props.height - margin.top - margin.bottom
 
     // 防止重复画图，有没有其它方式解决？
     d3.select("svg").remove()
@@ -41,12 +43,12 @@ const BarChart = (props: BarChartProps) => {
           return d.date
         })
       )
-      .padding(0.2)
+      .padding(0.3)
 
     svg
       .append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x))
+      .call(d3.axisBottom(x).tickFormat((val) => val.slice(5)))
       .selectAll("text")
       .attr("transform", "translate(-10,0)rotate(-45)")
       .style("text-anchor", "end")

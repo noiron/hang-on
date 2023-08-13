@@ -3,6 +3,9 @@ import { useEffect, useState } from "react"
 import sloth from "data-base64:~assets/sloth.svg"
 import "../style.css"
 import "./popup.css"
+import { timeStorage } from "~background/messages/time"
+import { useTimeRangeData } from "~hooks"
+import BarChart from "~tabs/bar-chart"
 
 function IndexPopup() {
   const [blockedSites, setBlockedSites] = useStorage<string[]>(
@@ -12,6 +15,13 @@ function IndexPopup() {
   const [isBlocked, setIsBlocked] = useState(false)
   const [matchedSite, setMatchedSite] = useState("")
   const [currentUrl, setCurrentUrl] = useState<URL>(null)
+
+  const [recordedTimes] = useStorage<{ [host: string]: number[] | number }>({
+    key: "time",
+    instance: timeStorage
+  })
+  const host = currentUrl?.host
+  const [chartData] = useTimeRangeData(recordedTimes?.[host] || [], 7)
 
   useEffect(() => {
     async function check() {
@@ -84,10 +94,16 @@ function IndexPopup() {
         <h2 className="mb-2 text-xl font-bold">{text}</h2>
         <p className="text-lg">{isBlocked ? matchedSite : currentUrl?.host}</p>
         <button
-          className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
           onClick={toggleBlock}>
           {isBlocked ? "Unblock" : "Block"}
         </button>
+
+        {isBlocked && (
+          <div className="mt-4">
+            <BarChart data={chartData} width={320} height={200} />
+          </div>
+        )}
 
         <div className="mt-2">
           <button
