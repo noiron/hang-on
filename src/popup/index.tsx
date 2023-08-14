@@ -101,7 +101,17 @@ function IndexPopup() {
 
         {isBlocked && (
           <div className="mt-4">
-            <BarChart data={chartData} width={320} height={200} />
+            <BarChart
+              data={chartData}
+              width={320}
+              height={200}
+              margin={{
+                top: 20,
+                right: 30,
+                bottom: 30,
+                left: 30
+              }}
+            />
           </div>
         )}
 

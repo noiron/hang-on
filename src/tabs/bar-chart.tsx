@@ -8,6 +8,12 @@ interface BarChartProps {
   }[]
   width: number
   height: number
+  margin?: {
+    top: number
+    right: number
+    bottom: number
+    left: number
+  }
 }
 
 const BarChart = (props: BarChartProps) => {
@@ -15,7 +21,7 @@ const BarChart = (props: BarChartProps) => {
     if (!props.data || !props.data.length) return
 
     // set the dimensions and margins of the graph
-    const margin = { top: 30, right: 30, bottom: 40, left: 60 }
+    const margin = props.margin || { top: 30, right: 30, bottom: 40, left: 60 }
     const width = props.width - margin.left - margin.right
     const height = props.height - margin.top - margin.bottom
 
